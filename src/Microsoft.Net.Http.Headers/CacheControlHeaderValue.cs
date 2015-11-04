@@ -184,7 +184,7 @@ namespace Microsoft.Net.Http.Headers
             if (_noCache)
             {
                 AppendValueWithSeparatorIfRequired(sb, NoCacheString);
-                if (_noCacheHeaders?.Count > 0)
+                if ((_noCacheHeaders != null) && (_noCacheHeaders.Count > 0))
                 {
                     sb.Append("=\"");
                     AppendValues(sb, _noCacheHeaders);
@@ -295,7 +295,7 @@ namespace Microsoft.Net.Http.Headers
                 (_maxStaleLimit.HasValue ? _maxStaleLimit.Value.GetHashCode() ^ 4 : 0) ^
                 (_minFresh.HasValue ? _minFresh.Value.GetHashCode() ^ 8 : 0);
 
-            if (_noCacheHeaders?.Count > 0)
+            if ((_noCacheHeaders != null) && (_noCacheHeaders.Count > 0))
             {
                 foreach (var noCacheHeader in _noCacheHeaders)
                 {
@@ -303,7 +303,7 @@ namespace Microsoft.Net.Http.Headers
                 }
             }
 
-            if (_privateHeaders?.Count > 0)
+            if ((_privateHeaders != null) && (_privateHeaders.Count > 0))
             {
                 foreach (var privateHeader in _privateHeaders)
                 {
@@ -311,7 +311,7 @@ namespace Microsoft.Net.Http.Headers
                 }
             }
 
-            if (_extensions?.Count > 0)
+            if ((_extensions != null) && (_extensions.Count > 0))
             {
                 foreach (var extension in _extensions)
                 {
@@ -503,7 +503,7 @@ namespace Microsoft.Net.Http.Headers
             var current = 1; // skip the initial '"' character.
             var maxLength = valueString.Length - 1; // -1 because we don't want to parse the final '"'.
             var separatorFound = false;
-            var originalValueCount = destination?.Count ?? 0;
+            var originalValueCount = destination == null ? 0 : destination.Count;
             while (current < maxLength)
             {
                 current = HeaderUtilities.GetNextNonEmptyOrWhitespaceIndex(valueString, current, true,
